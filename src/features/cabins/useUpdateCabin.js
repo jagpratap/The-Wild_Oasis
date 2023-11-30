@@ -3,13 +3,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createUpdateCabin } from "../../services/apiCabins";
 
-export function useCreateCabin() {
+export function useUpdateCabin() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isCreating, mutate: handleCreateCabin } = useMutation({
-    mutationFn: createUpdateCabin,
+  const { isLoading: isUpdating, mutate: handleUpdateCabin } = useMutation({
+    mutationFn: ({ newCabinData, id }) => createUpdateCabin(newCabinData, id),
     onSuccess: () => {
-      toast.success("New cabin successfully created");
+      toast.success("Cabin successfully updated");
 
       queryClient.invalidateQueries({
         queryKey: ["cabins"],
@@ -18,5 +18,5 @@ export function useCreateCabin() {
     onError: (err) => toast.error(err.message),
   });
 
-  return { isCreating, handleCreateCabin };
+  return { isUpdating, handleUpdateCabin };
 }

@@ -7,12 +7,12 @@ import FormRow from "../../ui/FormRow";
 import Textarea from "../../ui/Textarea";
 import FileInput from "../../ui/FileInput";
 
-import { useEditCabin } from "./useEditCabin";
+import { useUpdateCabin } from "./useUpdateCabin";
 import { useCreateCabin } from "./useCreateCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { isCreating, handleCreateCabin } = useCreateCabin();
-  const { isEditing, handleEditCabin } = useEditCabin();
+  const { isUpdating, handleUpdateCabin } = useUpdateCabin();
 
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
@@ -26,12 +26,12 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     defaultValues: isEditSession ? editValues : {},
   });
 
-  const isWorking = isCreating || isEditing;
+  const isWorking = isCreating || isUpdating;
 
   const onSubmit = (data) => {
     const image = typeof data.image === "string" ? data.image : data.image[0];
     if (isEditSession) {
-      handleEditCabin(
+      handleUpdateCabin(
         { newCabinData: { ...data, image }, id: editId },
         {
           onSuccess: (data) => {
@@ -143,7 +143,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           Cancel
         </Button>
         <Button disabled={isWorking}>
-          {isEditSession ? "Edit cabin" : "Create new cabin"}
+          {isEditSession ? "Update cabin" : "Create new cabin"}
         </Button>
       </FormRow>
     </Form>
